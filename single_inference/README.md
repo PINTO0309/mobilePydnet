@@ -33,3 +33,14 @@ python export_onnx_support_tfv2.py \
 Code is licensed under Apache v2.0
 Pre-trained models can be used only for research purposes.
 Images inside `test` folder are from [Pexels](https://www.pexels.com/)
+
+---
+
+# ONNX tests
+![image](https://github.com/user-attachments/assets/57adf5a0-70bc-46ae-b04a-fd490dec29c0)
+
+```
+python inference_onnx.py
+```
+
+![Figure_1](https://github.com/user-attachments/assets/595c0e42-12b1-44f5-82a4-98b9f8ddfa9e)
