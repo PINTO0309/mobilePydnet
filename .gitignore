@@ -109,3 +109,4 @@ frozen_models/
 *.onnx
 *.engine
 *.profile
+saved_model/
