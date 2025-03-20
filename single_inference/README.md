@@ -48,6 +48,8 @@ python inference_onnx.py
   
   ![Figure_2](https://github.com/user-attachments/assets/cd1fdc33-8bf8-4401-b825-dbd006299f53)
 
-- YOLOv9 + PyDNet
+- YOLOv9 + PyDNet (**Pose estimation not used**)
 
   ![000000012069](https://github.com/user-attachments/assets/8512f4e5-28e9-4c13-9e70-56f6837a3d22)
+
+  https://github.com/user-attachments/assets/119eb025-6227-407f-83b1-b6a6ce79e44e
