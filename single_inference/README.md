@@ -43,6 +43,11 @@ Images inside `test` folder are from [Pexels](https://www.pexels.com/)
 python inference_onnx.py
 ```
 
-![Figure_1](https://github.com/user-attachments/assets/595c0e42-12b1-44f5-82a4-98b9f8ddfa9e)
+- PyDNet
+  ![Figure_1](https://github.com/user-attachments/assets/595c0e42-12b1-44f5-82a4-98b9f8ddfa9e)
+  
+  ![Figure_2](https://github.com/user-attachments/assets/cd1fdc33-8bf8-4401-b825-dbd006299f53)
 
-![Figure_2](https://github.com/user-attachments/assets/cd1fdc33-8bf8-4401-b825-dbd006299f53)
+- YOLOv9 + PyDNet
+
+  ![000000012069](https://github.com/user-attachments/assets/8512f4e5-28e9-4c13-9e70-56f6837a3d22)
