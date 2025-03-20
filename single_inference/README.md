@@ -1,5 +1,5 @@
 # Single inference
-Single inference using TensorFlow 1.15 and python 3.x.
+Single inference using TensorFlow 2.19 and python 3.x.
 You can install requirements by running the script:
 
 ```
