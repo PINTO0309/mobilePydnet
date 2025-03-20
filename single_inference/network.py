@@ -52,7 +52,7 @@ class Pydnet(object):
         prediction = tf.nn.relu(prediction)
         min_depth = tf.reduce_min(prediction, keep_dims=True)
         max_depth = tf.reduce_max(prediction, keep_dims=True)
-        prediction = tf.transpose((prediction - min_depth), perm=[0,3,1,2]) / (max_depth - min_depth)
+        prediction = tf.transpose((prediction - min_depth), perm=[0,3,1,2]) / (max_depth + 1e-6 - min_depth)
         return prediction
 
     def encoder(self, input_image):
