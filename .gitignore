@@ -103,5 +103,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 */Android/app/build/*
-ckpt/*
-frozen_models/*
+ckpt/
+frozen_models/
+*.tar.gz
+*.onnx

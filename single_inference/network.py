@@ -22,7 +22,8 @@
 # SOFTWARE.
 
 # adapted from https://github.com/mattpoggi/pydnet/blob/master/pydnet.py
-import tensorflow as tf
+import tensorflow as tfv2
+tf = tfv2.compat.v1
 from modules import conv2d_leaky, bilinear_upsampling_by_convolution
 
 

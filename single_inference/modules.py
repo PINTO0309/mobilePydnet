@@ -23,7 +23,8 @@
 # From https://github.com/mattpoggi/pydnet/blob/master/layers.py
 
 from __future__ import division
-import tensorflow as tf
+import tensorflow as tfv2
+tf = tfv2.compat.v1
 import numpy as np
 import math
 
@@ -42,7 +43,7 @@ def conv2d_leaky(
     weights = tf.get_variable(
         "weights",
         kernel_shape,
-        initializer=tf.contrib.layers.xavier_initializer(),
+        initializer=tf.keras.initializers.GlorotUniform(),
         dtype=tf.float32,
     )
     biases = tf.get_variable(

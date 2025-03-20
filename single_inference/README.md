@@ -18,13 +18,15 @@ In particular:
 2. run the `run.sh` script.
 
 # Export
-You can generate `.pb`, `tflite` and `mlmodel` of the network by running the command:
+You can generate `onnx` of the network by running the command:
 
 ```
-python export.py --ckpt ckpt/pydnet \
-        --arch pydnet \
-        --dest "./" \
-        --height 384 --width 640
+python export_onnx_support_tfv2.py \
+--ckpt ckpt/pydnet \
+--arch pydnet \
+--dest "./" \
+--height 384 \
+--width 640
 ```
 
 # License
