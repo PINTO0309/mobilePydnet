@@ -44,3 +44,5 @@ python inference_onnx.py
 ```
 
 ![Figure_1](https://github.com/user-attachments/assets/595c0e42-12b1-44f5-82a4-98b9f8ddfa9e)
+
+![Figure_2](https://github.com/user-attachments/assets/cd1fdc33-8bf8-4401-b825-dbd006299f53)
