@@ -107,3 +107,5 @@ ckpt/
 frozen_models/
 *.tar.gz
 *.onnx
+*.engine
+*.profile
