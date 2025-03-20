@@ -34,6 +34,8 @@ Code is licensed under Apache v2.0
 Pre-trained models can be used only for research purposes.
 Images inside `test` folder are from [Pexels](https://www.pexels.com/)
 
+---
+
 # ONNX tests
 ![image](https://github.com/user-attachments/assets/57adf5a0-70bc-46ae-b04a-fd490dec29c0)
 
