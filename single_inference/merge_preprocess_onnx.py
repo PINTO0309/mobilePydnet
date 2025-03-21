@@ -7,6 +7,7 @@ import onnx
 from onnxsim import simplify
 from sor4onnx import rename
 from snc4onnx import combine
+from soa4onnx import outputs_add
 
 class Pre_model(torch.nn.Module):
     def __init__(
@@ -285,6 +286,11 @@ def main():
             bbox_depth_merge_onnx_file,
         ],
         output_onnx_file_path = f'yolov9_e_wholebody34_with_depth_post_0100_1x3x{yolo_H}x{yolo_W}.onnx',
+    )
+    outputs_add(
+        input_onnx_file_path=f'yolov9_e_wholebody34_with_depth_post_0100_1x3x{yolo_H}x{yolo_W}.onnx',
+        output_op_names=["depth"],
+        output_onnx_file_path=f'yolov9_e_wholebody34_with_depth_post_0100_1x3x{yolo_H}x{yolo_W}.onnx',
     )
 
 if __name__ == "__main__":
