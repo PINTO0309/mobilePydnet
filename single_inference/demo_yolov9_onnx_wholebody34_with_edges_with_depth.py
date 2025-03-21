@@ -417,7 +417,7 @@ class YOLOv9(AbstractModel):
             Entire image.
 
         boxes: np.ndarray
-            float32[N, 7]. [instances, [batchno, classid, score, x1, y1, x2, y2]].
+            float32[N, 8]. [instances, [batchno, classid, score, x1, y1, x2, y2, depth]].
 
         depth: np.ndarray
             float32[1,1,H,W]
@@ -464,8 +464,9 @@ class YOLOv9(AbstractModel):
                     y_max = int(min(box[6], self._input_shapes[0][self._h_index]) * image_height / self._input_shapes[0][self._h_index])
                     cx = (x_min + x_max) // 2
                     cy = (y_min + y_max) // 2
-                    crx1, crx2 = np.clip([cx - 3, cx + 3], 0, image_width)
-                    cry1, cry2 = np.clip([cy - 3, cy + 3], 0, image_height)
+                    cz = box[7]
+                    # crx1, crx2 = np.clip([cx - 3, cx + 3], 0, image_width)
+                    # cry1, cry2 = np.clip([cy - 3, cy + 3], 0, image_height)
                     result_boxes.append(
                         Box(
                             classid=classid,
@@ -476,7 +477,7 @@ class YOLOv9(AbstractModel):
                             y2=y_max,
                             cx=cx,
                             cy=cy,
-                            cz=int(np.median(result_depth[cry1:cry2, crx1:crx2])),
+                            cz=cz, #int(np.median(result_depth[cry1:cry2, crx1:crx2])),
                             generation=-1, # -1: Unknown, 0: Adult, 1: Child
                             gender=-1, # -1: Unknown, 0: Male, 1: Female
                             handedness=-1, # -1: Unknown, 0: Left, 1: Right

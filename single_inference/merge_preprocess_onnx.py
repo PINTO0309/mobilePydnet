@@ -37,6 +37,38 @@ class Post_model(torch.nn.Module):
         x = torch.nn.functional.interpolate(input=x, size=(h, w))
         return x
 
+class DepthBBoxProcessor(torch.nn.Module):
+    def __init__(self):
+        super(DepthBBoxProcessor, self).__init__()
+
+    def forward(self, bboxes: torch.Tensor, depth_map: torch.Tensor):
+        """
+        Args:
+            bboxes (torch.Tensor): Tensor of shape [instances, 7] containing [batchid, classid, score, x1, y1, x2, y2].
+            depth_map (torch.Tensor): Tensor of shape [batch, 1, Height, Width] representing pixel-wise depth.
+
+        Returns:
+            torch.Tensor: Tensor of shape [instances, 8] containing [batchid, classid, score, x1, y1, x2, y2, depth].
+        """
+        batch_ids = bboxes[:, 0].long()  # Extract batch indices
+        depth_map = depth_map.squeeze(1)  # Shape: [batch, Height, Width]
+        height, width = depth_map.shape[1:]
+
+        # Convert normalized coordinates to absolute pixel values
+        x1 = (bboxes[:, 3] * width).long()
+        y1 = (bboxes[:, 4] * height).long()
+        x2 = (bboxes[:, 5] * width).long()
+        y2 = (bboxes[:, 6] * height).long()
+
+        cx = ((x1 + x2) // 2).clamp(0, width - 1)
+        cy = ((y1 + y2) // 2).clamp(0, height - 1)
+
+        depth_values = depth_map[batch_ids, cy, cx]
+        updated_bboxes = torch.cat((bboxes, depth_values.unsqueeze(1)), dim=1)
+
+        return updated_bboxes
+
+
 def main():
     pyd_H = 512
     pyd_W = 640
@@ -168,6 +200,44 @@ def main():
     model_simp, check = simplify(model_onnx2)
     onnx.save(model_simp, post_onnx_file)
 
+    bboxes = torch.tensor([
+        [0, 1, 0.9, 0.25, 0.25, 0.75, 0.75],
+        [0, 2, 0.8, 0.15, 0.15, 0.5, 0.5]
+    ], dtype=torch.float32)
+
+    depth_map = torch.rand(1, 1, 200, 200)  # Example depth map for 2 batches
+
+    ############### BBox+Depth merge post-process
+    processor = DepthBBoxProcessor()
+    processor.cpu()
+    processor.eval()
+    bbox_depth_merge_onnx_file = f"bboxes_depth_merge_process.onnx"
+    torch.onnx.export(
+        processor,
+        args=(bboxes, depth_map),
+        f=bbox_depth_merge_onnx_file,
+        opset_version=13,
+        input_names=['input_bboxes', 'inuput_depth_map'],
+        output_names=['batchno_classid_score_x1y1x2y2_depth'],
+        dynamic_axes={
+            'input_bboxes' : {0: 'N'},
+            'inuput_depth_map' : {2: 'H', 3: 'W'},
+            'batchno_classid_score_x1y1x2y2_depth' : {0: 'N'},
+        }
+    )
+    model_onnx = onnx.load(bbox_depth_merge_onnx_file)
+    model_simp, check = simplify(model_onnx)
+    onnx.save(model_simp, bbox_depth_merge_onnx_file)
+
+    rename(
+        old_new=["/", "bbox_depth_merge/"],
+        input_onnx_file_path=bbox_depth_merge_onnx_file,
+        output_onnx_file_path=bbox_depth_merge_onnx_file,
+        mode="full",
+        search_mode="prefix_match",
+    )
+
+
     ############### YOLO + PyDNet
     combine(
         srcop_destop = [
@@ -203,6 +273,16 @@ def main():
         input_onnx_file_paths = [
             f'yolov9_e_wholebody34_with_depth_post_0100_1x3x{yolo_H}x{yolo_W}.onnx',
             post_onnx_file,
+        ],
+        output_onnx_file_path = f'yolov9_e_wholebody34_with_depth_post_0100_1x3x{yolo_H}x{yolo_W}.onnx',
+    )
+    combine(
+        srcop_destop = [
+            ['batchno_classid_score_x1y1x2y2', 'input_bboxes', 'depth', 'inuput_depth_map'],
+        ],
+        input_onnx_file_paths = [
+            f'yolov9_e_wholebody34_with_depth_post_0100_1x3x{yolo_H}x{yolo_W}.onnx',
+            bbox_depth_merge_onnx_file,
         ],
         output_onnx_file_path = f'yolov9_e_wholebody34_with_depth_post_0100_1x3x{yolo_H}x{yolo_W}.onnx',
     )
