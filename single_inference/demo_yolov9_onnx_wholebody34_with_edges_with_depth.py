@@ -465,8 +465,8 @@ class YOLOv9(AbstractModel):
                     cx = (x_min + x_max) // 2
                     cy = (y_min + y_max) // 2
                     cz = box[7]
-                    # crx1, crx2 = np.clip([cx - 3, cx + 3], 0, image_width)
-                    # cry1, cry2 = np.clip([cy - 3, cy + 3], 0, image_height)
+                    crx1, crx2 = np.clip([cx - 3, cx + 3], 0, image_width)
+                    cry1, cry2 = np.clip([cy - 3, cy + 3], 0, image_height)
                     result_boxes.append(
                         Box(
                             classid=classid,
@@ -477,7 +477,7 @@ class YOLOv9(AbstractModel):
                             y2=y_max,
                             cx=cx,
                             cy=cy,
-                            cz=cz, #int(np.median(result_depth[cry1:cry2, crx1:crx2])),
+                            cz=int(np.median(result_depth[cry1:cry2, crx1:crx2])),
                             generation=-1, # -1: Unknown, 0: Adult, 1: Child
                             gender=-1, # -1: Unknown, 0: Male, 1: Female
                             handedness=-1, # -1: Unknown, 0: Left, 1: Right
