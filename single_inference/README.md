@@ -36,6 +36,10 @@ Images inside `test` folder are from [Pexels](https://www.pexels.com/)
 
 ---
 
+# YOLOv9-Depth
+
+![image](https://github.com/user-attachments/assets/5ada5814-58b3-4a61-ba3d-1575ac9d5a19)
+
 # ONNX tests
 ![image](https://github.com/user-attachments/assets/57adf5a0-70bc-46ae-b04a-fd490dec29c0)
 
